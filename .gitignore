@@ -7,3 +7,5 @@
 *.zip
 *.xlsx
 dmn_original.py
+.idea/
+tasks_1-20_v1-2.tar.gz
