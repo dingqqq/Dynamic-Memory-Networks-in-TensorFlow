@@ -81,14 +81,12 @@ for run in range(num_runs):
             print('Epoch {}'.format(epoch))
             start = time.time()
 
-            train_loss, train_accuracy = model.run_epoch(
-              session, model.train, epoch, train_writer,
-              train_op=model.train_step, train=True)
+            train_loss, train_accuracy = model.run_epoch(session, model.train, epoch, train_writer, train_op=model.train_step, train=True)
             valid_loss, valid_accuracy = model.run_epoch(session, model.valid)
             print('Training loss: {}'.format(train_loss))
             print('Validation loss: {}'.format(valid_loss))
             print('Training accuracy: {}'.format(train_accuracy))
-            print('Vaildation accuracy: {}'.format(valid_accuracy))
+            print('Validation accuracy: {}'.format(valid_accuracy))
 
             if valid_loss < best_val_loss:
                 best_val_loss = valid_loss
@@ -100,18 +98,14 @@ for run in range(num_runs):
                     saver.save(session, 'weights/task' + str(model.config.babi_id) + '.weights')
 
             # anneal
-            if train_loss>prev_epoch_loss*model.config.anneal_threshold:
-                model.config.lr/=model.config.anneal_by
-                print('annealed lr to %f'%model.config.lr)
+            if train_loss > prev_epoch_loss*model.config.anneal_threshold:
+                model.config.lr /= model.config.anneal_by
+                print('Annealed lr to {}'.format(model.config.lr))
 
             prev_epoch_loss = train_loss
-
 
             if epoch - best_val_epoch > config.early_stopping:
                 break
             print('Total time: {}'.format(time.time() - start))
 
-        print('Best validation accuracy:', best_val_accuracy)
-
-
-
+        print('Best validation accuracy: {}'.format(best_val_accuracy))
